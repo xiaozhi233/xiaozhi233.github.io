@@ -1,10 +1,10 @@
 @name C4 csgo
 @inputs 
 @persist Planted Time Player:entity A Defused CD W PlPasW:string Defusing PD:entity K MaxTime DefuseTime
+@persist [TEXT1Planting TEXT2Planted TEXT3TIMER1 TEXT3TIMER2 TEXT4Defusing TEXT4DefusingHand TEXT5Defused TEXT6TW TEXT7CTW TEXT8 TEXT9]:string
 @trigger 
 @model models/weapons/w_c4_planted.mdl
 interval(1)
-@persist [TEXT1Planting TEXT2Planted TEXT3TIMER1 TEXT3TIMER2 TEXT4Defusing TEXT4DefusingHand TEXT5Defused TEXT6TW TEXT7CTW TEXT8 TEXT9]:string
 TEXT1Planting="正在安放炸弹..."
 TEXT2Planted="炸弹已被安放。 "
 TEXT3TIMER1="离引爆还剩 "
