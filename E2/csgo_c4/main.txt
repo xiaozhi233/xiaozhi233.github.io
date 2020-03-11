@@ -26,7 +26,6 @@ function void sp(S:string)
     holoEntity(K):soundPlay(K,0,S)
     holoDelete(K-10)
 }
-#include "csgo_c4/language/schinese"
 if(first()){holoCreate(1),holoAlpha(1,0),holoParent(1,entity())}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              holoAlpha(1,0) holoScale(1,vec(0))
 if(first())
 {   
