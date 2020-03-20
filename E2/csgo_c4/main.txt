@@ -40,6 +40,8 @@ if(!W)
 }
 
 
+
+
 if(!Defused)
 {
     if(Player:keyUse()&!Planted&Player:aimEntity()==entity()){
