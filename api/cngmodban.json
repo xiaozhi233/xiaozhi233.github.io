@@ -1,1 +1,14 @@
-{ "id": ["STEAM_0:1:221655784","STEAM_0:0:223726367","STEAM_0:1:475042644","STEAM_0:1:119990330","STEAM_0:0:45508103","STEAM_0:1:124828642","STEAM_0:1:47927819","STEAM_0:1:166311265" ], "reason":[ "在多服骂人　炸服","辱华","辱华","辱华","辱华", ".","辱华","分裂国家" ], "name": ["纸张智障制杖","(涉及政治内容　不予放出)","(涉及政治内容　不予放出)","(涉及政治内容　不予放出)","(涉及政治内容　不予放出)","Vistowt.YueCCan","(涉及政治内容　不予放出)","(涉及政治内容　不予放出)" ]}
+{
+    "id": [  
+        "STEAM_0:1:221655784",  "STEAM_0:0:223726367",  "STEAM_0:1:475042644",  "STEAM_0:1:119990330",  "STEAM_0:0:45508103",  "STEAM_0:1:47927819",  "STEAM_0:1:166311265"
+    ],
+    "reason": [
+        "啥b",  "辱华，分裂国家",  "辱华，分裂国家",  "辱华",  "辱华",   "辱华",  "分裂国家"
+    ],
+    "region": [
+        "Beijing, China(IP location)","Taiwan, China(Firends' Region)","Taiwan, China(Firends' Region)","-We don't know-","Perth, Western Australia, Australia(Profile region)","South Korea(IP location)","South Korea(IP location)"
+    ],
+    "name": [  
+        "纸张智障制杖",  "(涉及政治内容　不予放出)",  "(涉及政治内容　不予放出)",  "(涉及政治内容　不予放出)",  "(涉及政治内容　不予放出)",  "(涉及政治内容　不予放出)",  "(涉及政治内容　不予放出)"
+    ]
+  }
