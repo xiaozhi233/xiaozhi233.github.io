@@ -1,0 +1,26 @@
+@inputs [TextEntry EGP StreamRadio PlayX EIISocket]:wirelink 
+
+@persist FirstBoot Unlocked LoadCfg Dtop Step1 Step2 Step3 DL I
+
+@persist [ScreenRes ScreenCenter]:vector2
+@persist [SCenter SRes]:vector2
+
+@persist Ram:table SRam:string
+@persist WColor:vector
+
+@persist U:entity
+
+@persist Bili [BData BInfo BUP]:table PG
+
+@persist CM CMData:table CMAData:table CPG
+
+@persist Bing WorldWide IMG Bings BDs BDIMG
+
+@persist ArrayData:array
+
+
+runOnTick(1)
+runOnFile(1)
+runOnHTTP(1)
+runOnLast(1)
+

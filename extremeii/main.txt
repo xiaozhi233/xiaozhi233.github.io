@@ -1,0 +1,727 @@
+@name ExtremeII OS
+
+#include "extremeii/functions"
+
+if (first()|dupefinished())
+{
+    E=entity()
+    EW=entity():isWeldedTo()
+    
+    E:createWire(EW,"EGP","wirelink")
+    
+    function number eii_ec(Ply:entity,ID) 
+    {
+            return inrange(EGP:egpCursor(Ply),EGP:egpPos(ID)-(EGP:egpSize(ID)/2),EGP:egpPos(ID)+(EGP:egpSize(ID)/2))
+    }
+    
+    EGP:egpClear()
+    
+    EGP:egpGlobalFiltering(0)
+    
+    ScreenRes=vec2(512,512)
+    ScreenCenter=vec2(256,256)
+    
+    SCenter=ScreenCenter
+    SRes=ScreenRes
+        
+    LoadCfg=1
+    
+    timer("cfb",500)
+}
+
+if (clk("d")) {DL=0}
+
+if (changed(DL)&DL) {timer("d",250)}
+
+U=EGP["User",entity]
+
+if (EW:isValid()&fileCanLoad()&LoadCfg)
+{
+    fileLoad("eiicfg.txt")
+}
+
+if (clk("cfb"))
+{
+    if (fileName()=="")
+    {
+        soundPlay(0,0,"buttons/button17.wav")
+        
+        fileWrite("eiicfg.txt","1")
+        timer("restart",500)
+    }    
+}
+if (clk("restart")) {reset()}
+
+if (LoadCfg&fileLoaded())
+{
+    I++
+    holoCreate(I)
+    holoAlpha(I,0)
+    holoEntity(I):soundPlay(0,0,"buttons/button22.wav")
+    
+    LoadCfg=0
+    
+    SRam=fileRead()
+    Ram=jsonDecode(fileRead())
+    
+    if (!Ram["Color",table])
+    {
+        Ram["Color",table]=table()
+        Ram["Account",table]=table()
+    }
+    
+    if (SRam=="1"|SRam=="[]")
+    {
+        FirstBoot=1
+    }
+    else
+    {
+        Dtop=1
+        
+        WColor=vec(Ram["Color",table]["WColor",table][1,number],Ram["Color",table]["WColor",table][2,number],Ram["Color",table]["WColor",table][3,number])
+        Name=Ram["Account",table]["Name",string]
+    }
+}
+
+if (Dtop)
+{
+    if (changed(Dtop)&Dtop)
+    {
+        EGP:egpBox(1,ScreenCenter,ScreenRes)
+        EGP:egpColor(1,vec(100))
+        
+        EGP:egpBox(2,SCenter+vec2(0,240),SRes+vec2(0,-480))
+        EGP:egpColor(2,vec(50))
+        
+        EGP:egpBox(3,SCenter+vec2(-240,240),vec2(25))
+        EGP:egpColor(3,WColor)
+        EGP:egpAlpha(3,100)
+        
+        EGP:egpBox(4,SCenter+vec2(-240,240),vec2(20))
+        EGP:egpMaterial(4,"3dstreamradio/icon16/wiremod.png")
+        
+        
+        EGP:egpRoundedBox(7,vec2(32),vec2(50))
+        EGP:egpRadius(7,10)
+        EGP:egpColor(7,vec(255,150,150))
+        
+        EGP:egpRoundedBoxOutline(8,vec2(32),vec2(35,25))
+        EGP:egpAlpha(8,100)
+        EGP:egpRadius(8,5)
+        EGP:egpColor(8,vec(255))
+        
+        EGP:egpText(9,"BiliBili",vec2(32,25))
+        EGP:egpSize(9,17)
+        EGP:egpAlign(9,1)
+        
+        EGP:egpText(10,"BiliBili",vec2(32,55))
+        EGP:egpAlign(10,1)
+        
+        
+        EGP:egpRoundedBox(11,vec2(96,32),vec2(50))
+        EGP:egpRadius(11,10)
+        
+        EGP:egpBox(13,vec2(96,32),vec2(40))
+        EGP:egpMaterial(13,"icon16/world.png") 
+        
+        EGP:egpText(14,"Web",vec2(96,55))
+        EGP:egpAlign(14,1)
+        
+        EGP:egpText(54,"Browser",vec2(96,65))
+        EGP:egpAlign(54,1)
+
+        EGP:egpRoundedBox(51,vec2(160,32),vec2(50))
+        EGP:egpColor(51,vec(255,0,0))
+        EGP:egpRadius(51,10)
+        
+        EGP:egpText(52,"@",vec2(137,32))
+        EGP:egpAngle(52,90)
+        EGP:egpSize(52,40)
+        EGP:egpAlign(52,1)
+        
+        EGP:egpText(53,"Cloud",vec2(160,56))
+        EGP:egpAlign(53,1)
+        
+        EGP:egpText(55,"Music",vec2(160,66))
+        EGP:egpAlign(55,1)
+    }
+    EGP:egpText(5,toString(time("hour")+8)+":"+toString(time("min")+3),SCenter+vec2(250,225))
+    EGP:egpSize(5,15)
+    EGP:egpAlign(5,2)
+    
+    EGP:egpText(6,toString(time("year"))+"/"+toString(time("month"))+"/"+toString(time("day")),SCenter+vec2(250,240))
+    EGP:egpSize(6,15)
+    EGP:egpAlign(6,2)
+    
+    if (eii_ec(U,7)&!DL&!(CM|Bing)) {DL=1,Bili=1,soundPlay(0,0,"buttons/button22.wav")}
+    if (eii_ec(U,11)&!DL&!(CM|Bili)) {DL=1,Bing=1,soundPlay(0,0,"buttons/button22.wav")}
+    if (eii_ec(U,51)&!DL&!(Bili|CM)) {DL=1,CM=1,soundPlay(0,0,"buttons/button22.wav")}
+    
+    if (Bili)
+    {
+        PlayX["Provider",string]="StaticWeb"
+        
+        if (eii_ec(U,18)&!DL) 
+        {
+            I++
+            holoCreate(I)
+            holoAlpha(I,0)
+            holoEntity(I):soundPlay(0,0,"buttons/button22.wav")
+    
+            DL=1
+            Bili=0
+            
+            for (I=15,40)
+            {
+                EGP:egpRemove(I)
+            }
+        }
+        
+        if (changed(Bili)&Bili)
+        {
+            EGP:egpRoundedBox(15,SCenter,vec2(350,300))
+            EGP:egpRadius(15,3)
+            EGP:egpColor(15,vec(70))
+            
+            EGP:egpRoundedBox(16,SCenter+vec2(0,-160),vec2(350,20))
+            EGP:egpRadius(16,3)
+            EGP:egpColor(16,vec(255,100,100))
+            
+            EGP:egpText(17,"BiliBili",SCenter+vec2(-170,-170))
+            
+            EGP:egpBox(18,SCenter+vec2(160,-160),vec2(16))
+            EGP:egpMaterial(18,"icon16/cancel.png")
+            
+            if (PlayX)
+            {
+                EGP:egpRoundedBox(19,SCenter+vec2(-95,-135),vec2(150,20))
+                EGP:egpRadius(19,5)
+                EGP:egpColor(19,vec(90))
+            }
+            else
+            {
+                EGP:egpBox(19,vec2(0,0),vec2(128))
+                EGP:egpParent(19,15)
+                EGP:egpMaterial(19,"icon16/exclamation.png")
+                
+                EGP:egpText(20,"Not Connect To PlayX!",vec2(0,70))
+                EGP:egpAlign(20,1)
+                EGP:egpSize(20,30)
+                EGP:egpColor(20,vec(20))
+                EGP:egpParent(20,15)
+            }
+        }
+        
+        if (PlayX)
+        {
+        
+        if (changed(TextEntry["Text",string])&TextEntry["Text",string])
+        {
+            EGP:egpText(20,TextEntry["Text",string],SCenter+vec2(-165,-145))
+        }
+        
+        if (changed(TextEntry["Text",string])&TextEntry["Text",string]&httpCanRequest())
+        {
+            httpRequest("https://api.bilibili.com/x/web-interface/search/all/v2?keyword="+TextEntry["Text",string]:replace(" ","+"))
+            PG=1
+        }
+    
+        if (httpSuccess()) 
+        {
+            if (httpClk()|changed(PG))
+            {
+                BData=httpData():gmatch("\"result_type\":\"video\",\"data\":(%b[])")
+            
+                BInfo=BData[1,array][1,string]:gmatch("\"bvid\":\"([^\,]+)\",\"title\":\"([^\,]+)\",\"description\":\"([^\"]+)\"")
+            
+                BUP=BData[1,array][1,string]:gmatch("\"author\":\"([^\"]+)\"")
+
+            
+                EGP:egpBox(21,SCenter+vec2(0,-98),vec2(350,50))
+                EGP:egpColor(21,vec(50))
+            
+                EGP:egpBox(23,SCenter+vec2(0,-48),vec2(350,50))
+                EGP:egpColor(23,vec(70))
+            
+                EGP:egpBox(24,SCenter+vec2(0,2),vec2(350,50))
+                EGP:egpColor(24,vec(50))
+            
+                EGP:egpBox(25,SCenter+vec2(0,52),vec2(350,50))
+                EGP:egpColor(25,vec(70))
+            
+                EGP:egpBox(26,SCenter+vec2(0,102),vec2(350,50))
+                EGP:egpColor(26,vec(50))
+            
+                #########################################
+            
+                T1=BInfo[1*PG,array][2,string]:replace("\\u003cem\ class=\\\"keyword\\\"\\u003e",""):replace("\\u003c/em\\u003e","")
+                T2=BInfo[2*PG,array][2,string]:replace("\\u003cem\ class=\\\"keyword\\\"\\u003e",""):replace("\\u003c/em\\u003e","")
+                T3=BInfo[3*PG,array][2,string]:replace("\\u003cem\ class=\\\"keyword\\\"\\u003e",""):replace("\\u003c/em\\u003e","")
+                T4=BInfo[4*PG,array][2,string]:replace("\\u003cem\ class=\\\"keyword\\\"\\u003e",""):replace("\\u003c/em\\u003e","")
+                T5=BInfo[5*PG,array][2,string]:replace("\\u003cem\ class=\\\"keyword\\\"\\u003e",""):replace("\\u003c/em\\u003e","")
+                
+                U1=BUP[1*PG,array][1,string]
+                U2=BUP[2*PG,array][1,string]
+                U3=BUP[3*PG,array][1,string]
+                U4=BUP[4*PG,array][1,string]
+                U5=BUP[5*PG,array][1,string]
+                
+                EGP:egpText(27,"UP:"+U1,SCenter+vec2(-170,-99))
+                EGP:egpText(28,"UP:"+U2,SCenter+vec2(-170,-49))
+                EGP:egpText(29,"UP:"+U3,SCenter+vec2(-170,0))
+                EGP:egpText(30,"UP:"+U4,SCenter+vec2(-170,51))
+                EGP:egpText(31,"UP:"+U5,SCenter+vec2(-170,101))
+            
+                ##################################################
+            
+                
+                EGP:egpText(32,T1,SCenter+vec2(-170,-115))
+                EGP:egpText(33,T2,SCenter+vec2(-170,-65))
+                EGP:egpText(34,T3,SCenter+vec2(-170,-20))
+                EGP:egpText(35,T4,SCenter+vec2(-170,35))
+                EGP:egpText(36,T5,SCenter+vec2(-170,85))
+                
+                EGP:egpBox(37,SCenter+vec2(275,0),vec2(200,300))
+                EGP:egpColor(37,vec(100))
+                
+                EGP:egpBox(38,SCenter+vec2(30,140),vec2(25))
+                EGP:egpMaterial(38,"icon16/arrow_right.png")
+                
+                EGP:egpBox(39,SCenter+vec2(-30,140),vec2(25))
+                EGP:egpMaterial(39,"icon16/arrow_left.png")
+                
+                EGP:egpText(40,PG+"/"+floor(BInfo:count()/5),SCenter+vec2(0,130))
+                EGP:egpAlign(40,1)
+            }
+            if (eii_ec(U,38)&!DL&PG<floor(BInfo:count()/5)) {DL=1,PG=PG+1}
+            if (eii_ec(U,39)&!DL&PG>1) {DL=1,PG=PG-1}
+        }
+        if (httpSuccess())
+        {
+            if (eii_ec(U,21)) {PlayX["URI",string]="https://player.bilibili.com/player.html?&bvid="+BInfo[1*PG,array][1,string]+"&page=1&autoplay=1",timer("c",200)}
+            if (eii_ec(U,23)) {PlayX["URI",string]="https://player.bilibili.com/player.html?&bvid="+BInfo[2*PG,array][1,string]+"&page=1&autoplay=1",timer("c",200)}
+            if (eii_ec(U,24)) {PlayX["URI",string]="https://player.bilibili.com/player.html?&bvid="+BInfo[3*PG,array][1,string]+"&page=1&autoplay=1",timer("c",200)}
+            if (eii_ec(U,25)) {PlayX["URI",string]="https://player.bilibili.com/player.html?&bvid="+BInfo[4*PG,array][1,string]+"&page=1&autoplay=1",timer("c",200)}
+            if (eii_ec(U,26)) {PlayX["URI",string]="https://player.bilibili.com/player.html?&bvid="+BInfo[5*PG,array][1,string]+"&page=1&autoplay=1",timer("c",200)}
+        }
+        
+        if (clk("c")) {PlayX["Open",number]=1,timer("cl",500)}
+        if (clk("cl")) {PlayX["Open",number]=0}
+    }
+    
+    }
+    
+    if (CM)
+    {
+        if (eii_ec(U,18)&!DL) 
+        {
+            I++
+            holoCreate(I)
+            holoAlpha(I,0)
+            holoEntity(I):soundPlay(0,0,"buttons/button22.wav")
+    
+            DL=1
+            CM=0
+            
+            for (I=15,45)
+            {
+                EGP:egpRemove(I)
+            }
+        }
+        
+        if (changed(CM)&CM)
+        {
+            EGP:egpRoundedBox(15,SCenter,vec2(350,300))
+            EGP:egpRadius(15,3)
+            EGP:egpColor(15,vec(70))
+            
+            EGP:egpRoundedBox(16,SCenter+vec2(0,-160),vec2(350,20))
+            EGP:egpRadius(16,3)
+            EGP:egpColor(16,vec(255,0,0))
+            
+            EGP:egpText(17,"CloudMuisc",SCenter+vec2(-170,-170))
+            
+            EGP:egpBox(18,SCenter+vec2(160,-160),vec2(16))
+            EGP:egpMaterial(18,"icon16/cancel.png")
+            
+            EGP:egpBox(44,SCenter+vec2(130,-136),vec2(20))
+            
+            EGP:egpBox(45,SCenter+vec2(160,-136),vec2(20))
+            
+            if (StreamRadio)
+            {
+                EGP:egpRoundedBox(19,SCenter+vec2(-95,-135),vec2(150,20))
+                EGP:egpRadius(19,5)
+                EGP:egpColor(19,vec(90))
+              
+                EGP:egpLine(22,SCenter+vec2(0,-135),SCenter+vec2(100,-135))
+                EGP:egpColor(22,vec(150))
+                EGP:egpSize(22,3)   
+            }
+            else
+            {
+                EGP:egpBox(19,vec2(0,0),vec2(128))
+                EGP:egpParent(19,15)
+                EGP:egpMaterial(19,"icon16/exclamation.png")
+                
+                EGP:egpText(20,"Not Connect To StreamRadio!",vec2(0,70))
+                EGP:egpAlign(20,1)
+                EGP:egpSize(20,20)
+                EGP:egpColor(20,vec(20))
+                EGP:egpParent(20,15)
+            }
+        }
+        
+        if (StreamRadio)
+        {
+            
+        if (eii_ec(U,44)&!DL) {DL=1,StreamRadio["Pause",number]=!StreamRadio["Paused",number]}
+        if (eii_ec(U,45)&!DL) {DL=1,StreamRadio["Loop",number]=!StreamRadio["Loop",number]}
+            
+        if (StreamRadio["Paused",number]) {EGP:egpMaterial(44,"icon16/control_pause.png")} else {EGP:egpMaterial(44,"icon16/control_play.png")}
+        if (StreamRadio["Loop",number]) {EGP:egpMaterial(45,"icon16/arrow_refresh.png")} else {EGP:egpMaterial(45,"icon16/arrow_right.png")}
+        
+        
+        if (changed(TextEntry["Text",string])&TextEntry["Text",string])
+        {
+            EGP:egpText(20,TextEntry["Text",string],SCenter+vec2(-165,-145))
+        }
+        
+        if (changed(TextEntry["Text",string])&TextEntry["Text",string])
+        {
+            CPG=1
+            httpRequest("http://music.163.com/api/search/pc?s="+httpUrlEncode(TextEntry["Text",string])+"&offset=0&limit=100&type=1")
+        }
+        
+        if (httpSuccess())
+        {
+            if (httpClk()|changed(CPG))
+            {
+                CMData=httpData():gmatch("\"name\":\"([^\"]+)\",\"id\":(%d+),\"position\"") 
+                
+                CMAData=httpData():gmatch("\"artists\":(%b[]),\"album\"")
+                
+                EGP:egpBox(21,SCenter+vec2(0,-98),vec2(350,50))
+                EGP:egpColor(21,vec(50))
+            
+                EGP:egpBox(23,SCenter+vec2(0,-48),vec2(350,50))
+                EGP:egpColor(23,vec(70))
+            
+                EGP:egpBox(24,SCenter+vec2(0,2),vec2(350,50))
+                EGP:egpColor(24,vec(50))
+            
+                EGP:egpBox(25,SCenter+vec2(0,52),vec2(350,50))
+                EGP:egpColor(25,vec(70))
+            
+                EGP:egpBox(26,SCenter+vec2(0,102),vec2(350,50))
+                EGP:egpColor(26,vec(50))
+            
+                #########################################
+            
+                N1=CMData[1*CPG,array][1,string]
+                N2=CMData[2*CPG,array][1,string]
+                N3=CMData[3*CPG,array][1,string]
+                N4=CMData[4*CPG,array][1,string]
+                N5=CMData[5*CPG,array][1,string]
+                
+                S1=CMAData[1*CPG,array][1,string]:gmatch("\"name\":(%b\"\")")[1,array][1,string]:replace("\"","")
+                S2=CMAData[2*CPG,array][1,string]:gmatch("\"name\":(%b\"\")")[1,array][1,string]:replace("\"","")
+                S3=CMAData[3*CPG,array][1,string]:gmatch("\"name\":(%b\"\")")[1,array][1,string]:replace("\"","")
+                S4=CMAData[4*CPG,array][1,string]:gmatch("\"name\":(%b\"\")")[1,array][1,string]:replace("\"","")
+                S5=CMAData[5*CPG,array][1,string]:gmatch("\"name\":(%b\"\")")[1,array][1,string]:replace("\"","")
+                
+                EGP:egpText(27,S1,SCenter+vec2(-170,-99))
+                EGP:egpText(28,S2,SCenter+vec2(-170,-49))
+                EGP:egpText(29,S3,SCenter+vec2(-170,0))
+                EGP:egpText(30,S4,SCenter+vec2(-170,51))
+                EGP:egpText(31,S5,SCenter+vec2(-170,101))
+            
+                ##################################################
+                
+                EGP:egpText(32,N1,SCenter+vec2(-170,-115))
+                EGP:egpText(33,N2,SCenter+vec2(-170,-65))
+                EGP:egpText(34,N3,SCenter+vec2(-170,-20))
+                EGP:egpText(35,N4,SCenter+vec2(-170,35))
+                EGP:egpText(36,N5,SCenter+vec2(-170,85))
+                
+                EGP:egpBox(37,SCenter+vec2(275,0),vec2(200,300))
+                EGP:egpColor(37,vec(100))
+                
+                EGP:egpBox(38,SCenter+vec2(30,140),vec2(25))
+                EGP:egpMaterial(38,"icon16/arrow_right.png")
+                
+                EGP:egpBox(39,SCenter+vec2(-30,140),vec2(25))
+                EGP:egpMaterial(39,"icon16/arrow_left.png")
+                
+                EGP:egpText(40,CPG+"/"+floor(CMData:count()/5),SCenter+vec2(0,130))
+                EGP:egpAlign(40,1)
+            }
+            
+            if (eii_ec(U,21)&!DL) {DL=1,StreamRadio["Play",number]=1,StreamRadio["Stream URL",string]="http://music.163.com/song/media/outer/url?id="+CMData[1*CPG,array][2,string]}
+            if (eii_ec(U,23)&!DL) {DL=1,StreamRadio["Play",number]=1,StreamRadio["Stream URL",string]="http://music.163.com/song/media/outer/url?id="+CMData[2*CPG,array][2,string]}
+            if (eii_ec(U,24)&!DL) {DL=1,StreamRadio["Play",number]=1,StreamRadio["Stream URL",string]="http://music.163.com/song/media/outer/url?id="+CMData[3*CPG,array][2,string]}
+            if (eii_ec(U,25)&!DL) {DL=1,StreamRadio["Play",number]=1,StreamRadio["Stream URL",string]="http://music.163.com/song/media/outer/url?id="+CMData[4*CPG,array][2,string]}
+            if (eii_ec(U,26)&!DL) {DL=1,StreamRadio["Play",number]=1,StreamRadio["Stream URL",string]="http://music.163.com/song/media/outer/url?id="+CMData[5*CPG,array][2,string]}
+            
+            if (eii_ec(U,38)&!DL&CPG<floor(CMData:count()/5)) {DL=1,CPG=CPG+1}
+            if (eii_ec(U,39)&!DL&CPG>1) {DL=1,CPG=CPG-1}
+        }
+        
+        if (changed(StreamRadio["Time",number]))
+        {
+            EGP:egpLine(41,SCenter+vec2(0,-135),SCenter+vec2(StreamRadio["Time",number]/StreamRadio["Length",number]*100,-135))
+            EGP:egpSize(41,3)
+            EGP:egpColor(41,vec(255,0,0))
+        
+            EGP:egpCircle(42,SCenter+vec2(StreamRadio["Time",number]/StreamRadio["Length",number]*100,-135),vec2(5))
+            EGP:egpCircle(43,vec2(0),vec2(3))
+            EGP:egpParent(43,42)
+            EGP:egpColor(43,vec(255,0,0))
+        }
+        
+        }
+    }
+    
+    if (Bing)
+    {
+        PlayX["Provider",string]="StaticWeb"
+        
+        if (eii_ec(U,18)&!DL) 
+        {
+            I++
+            holoCreate(I)
+            holoAlpha(I,0)
+            holoEntity(I):soundPlay(0,0,"buttons/button22.wav")
+    
+            DL=1
+            Bing=0
+            
+            for (I=15,40)
+            {
+                EGP:egpRemove(I)
+            }
+        }
+        
+        if (changed(Bing)&Bing)
+        {
+            EGP:egpRoundedBox(15,SCenter,vec2(350,300))
+            EGP:egpRadius(15,3)
+            EGP:egpColor(15,vec(70))
+            
+            EGP:egpRoundedBox(16,SCenter+vec2(0,-160),vec2(350,20))
+            EGP:egpRadius(16,3)
+            EGP:egpColor(16,vec(30,150,100))
+            
+            EGP:egpText(17,"WebBrowser",SCenter+vec2(-170,-170))
+            
+            EGP:egpBox(18,SCenter+vec2(160,-160),vec2(16))
+            EGP:egpMaterial(18,"icon16/cancel.png")
+            
+            EGP:egpRoundedBox(21,SCenter+vec2(-140,-90),vec2(50))
+            EGP:egpRadius(21,10)
+        
+            EGP:egpText(22,"b",SCenter+vec2(-140,-110))
+            EGP:egpSize(22,40)
+            EGP:egpAlign(22,1)
+            EGP:egpColor(22,vec(30,150,100))
+            
+            EGP:egpBox(24,SCenter+vec2(-70,-75),vec2(50,20))
+            
+            EGP:egpBox(25,SCenter+vec2(-70,-105),vec2(50,20))
+            
+            EGP:egpText(26,"IMG",SCenter+vec2(-70,-85))
+            EGP:egpColor(26,vec(0))
+            EGP:egpAlign(26,1)
+            
+            EGP:egpText(27,"World",SCenter+vec2(-70,-115))
+            EGP:egpColor(27,vec(0))
+            EGP:egpAlign(27,1)
+            
+            EGP:egpRoundedBox(28,SCenter+vec2(0,-90),vec2(50))
+            EGP:egpRadius(28,10)
+        
+            EGP:egpText(29,"b",SCenter+vec2(0,-110))
+            EGP:egpSize(29,40)
+            EGP:egpAlign(29,1)
+            EGP:egpColor(29,vec(0,0,255))
+            
+            EGP:egpBox(30,SCenter+vec2(60,-75),vec2(50,20))
+            
+            EGP:egpText(31,"IMG",SCenter+vec2(60,-85))
+            EGP:egpColor(31,vec(0))
+            EGP:egpAlign(31,1)
+
+            
+            if (PlayX)
+            {
+                EGP:egpRoundedBox(19,SCenter+vec2(-95,-135),vec2(150,20))
+                EGP:egpRadius(19,5)
+                EGP:egpColor(19,vec(90))
+            }
+            else
+            {
+                EGP:egpBox(19,vec2(0,0),vec2(128))
+                EGP:egpParent(19,15)
+                EGP:egpMaterial(19,"icon16/exclamation.png")
+                
+                EGP:egpText(20,"Not Connect To PlayX!",vec2(0,70))
+                EGP:egpAlign(20,1)
+                EGP:egpSize(20,30)
+                EGP:egpColor(20,vec(20))
+                EGP:egpParent(20,15)
+            }
+        }
+        
+        if (PlayX)
+        {
+            if (eii_ec(U,21)&!DL) {DL=1,Bings=1,BDs=0,EGP:egpBoxOutline(23,SCenter+vec2(-140,-90),vec2(65)),EGP:egpColor(23,vec(0,255,0))}
+            if (eii_ec(U,28)&!DL) {DL=1,Bings=0,BDs=1,EGP:egpBoxOutline(23,SCenter+vec2(0,-90),vec2(65)),EGP:egpColor(23,vec(0,255,0))}
+
+            if (eii_ec(U,24)&!DL) {DL=1,IMG=!IMG,if (IMG) {EGP:egpColor(24,vec(0,255,0))} else {EGP:egpColor(24,vec(255))}}
+            if (eii_ec(U,25)&!DL) {DL=1,WorldWide=!WorldWide,if (WorldWide) {EGP:egpColor(25,vec(0,255,0))} else {EGP:egpColor(25,vec(255))}}
+            
+            if (eii_ec(U,30)&!DL) {DL=1,BDIMG=!BDIMG,if (BDIMG) {EGP:egpColor(30,vec(0,255,0))} else {EGP:egpColor(30,vec(255))}}
+    
+                
+            if (Bings)
+            {
+                if (changed(TextEntry["Text",string])&TextEntry["Text",string]|(changed(WorldWide)|changed(IMG)|changed(Bings)))
+                {
+                    EGP:egpText(20,TextEntry["Text",string],SCenter+vec2(-165,-145))
+                
+                    timer("c",500)
+
+                    if (IMG)
+                    {
+                        if (!WorldWide) {S="https://cn.bing.com/images/search?q="+httpUrlEncode(TextEntry["Text",string])+"&FORM=BESBTB&ensearch=0"} else {S="https://cn.bing.com/images/search?q="+httpUrlEncode(TextEntry["Text",string])+"&FORM=BESBTB&ensearch=1"}
+                        PlayX["URI",string]=S
+                    }
+                    else
+                    {
+                        if (!WorldWide) {S="https://cn.bing.com/search?q="+httpUrlEncode(TextEntry["Text",string])+"&FORM=BESBTB&ensearch=0"} else {S="https://cn.bing.com/search?q="+httpUrlEncode(TextEntry["Text",string])+"&FORM=BESBTB&ensearch=1"}
+                        PlayX["URI",string]=S
+                    }
+                }
+            }
+            
+            if (changed(TextEntry["Text",string])&TextEntry["Text",string]|changed(BDIMG)|changed(BDs))
+            {
+                if (BDs)
+                {
+                    timer("c",500)
+                    if (BDIMG)
+                    {
+                        PlayX["URI",string]="http://image.baidu.com/search/index?tn=baiduimage&word="+httpUrlEncode(TextEntry["Text",string])
+                    }
+                    else
+                    {
+                        PlayX["URI",string]="https://www.baidu.com/s?wd="+httpUrlEncode(TextEntry["Text",string])
+                    }
+                }
+            }
+            
+            if (clk("c")) {PlayX["Open",number]=1,timer("cl",500)}
+            if (clk("cl")) {PlayX["Open",number]=0}
+        }
+    }
+}
+
+if (FirstBoot)
+{
+    if (changed(FirstBoot)&FirstBoot)
+    {
+        EGP:egpBox(1,ScreenCenter,ScreenRes)
+        EGP:egpColor(1,vec(0,150,255))
+        EGP:egpAlpha(1,100)
+        
+        EGP:egpBoxOutline(2,ScreenCenter,ScreenRes)
+        EGP:egpColor(2,vec(0,150,255))
+        EGP:egpSize(2,2)
+    
+        EGP:egpText(3,"Hello! This is your first boot",ScreenCenter+vec2(0,-21))
+        EGP:egpText(4,"It will take a few steps to setup your system",ScreenCenter+vec2(0,-1))
+        EGP:egpAlign(3,1)
+        EGP:egpAlign(4,1)
+    
+        EGP:egpBox(5,SCenter+vec2(0,50),vec2(100,30))
+        EGP:egpText(6,"Next",SCenter+vec2(0,35))
+        EGP:egpColor(6,vec(20))
+        EGP:egpSize(6,30)
+        EGP:egpAlign(6,1)
+        
+        Step1=1
+    }
+    
+    if (eii_ec(U,5)&!DL&Step1) {DL=1,Step2=1,Step1=0}
+    elseif (eii_ec(U,5)&!DL&Step2) {DL=1,Step2=0,Ram["Color",table]["WColor",vector]=WColor,Step3=1}
+    elseif (eii_ec(U,5)&!DL&Step3) {DL=1,Step3=0,Ram["Account",table]["Name",string]=TextEntry["Text",string],fileWrite("eiicfg.txt",jsonEncode(Ram)),timer("restart",500),EGP:egpClear()}
+    
+    if (Step2)
+    {
+        if (changed(Step2)&Step2)
+        {
+            EGP:egpClear()
+        
+            EGP:egpBox(1,ScreenCenter,ScreenRes)
+            EGP:egpColor(1,vec(0,150,255))
+            EGP:egpAlpha(1,100)
+        
+            EGP:egpBoxOutline(2,ScreenCenter,ScreenRes)
+            EGP:egpColor(2,vec(0,150,255))
+            EGP:egpSize(2,2)
+    
+            EGP:egpText(3,"Set the WindowColor",ScreenCenter+vec2(0,-21))
+            EGP:egpAlign(3,1)
+    
+            EGP:egpBox(5,SCenter+vec2(0,100),vec2(100,25))
+            EGP:egpText(6,"Next",SCenter+vec2(0,85))
+            EGP:egpColor(6,vec(20))
+            EGP:egpSize(6,30)
+            EGP:egpAlign(6,1)
+        } 
+        
+        EGP:egpBox(7,SCenter+vec2(-100,40),vec2(50))
+        EGP:egpColor(7,WColor)
+        EGP:egpBoxOutline(8,SCenter+vec2(-100,40),vec2(50))
+        
+        EGP:egpText(9,WColor:toString(),SCenter+vec2(0,30))
+        EGP:egpColor(9,WColor)
+        EGP:egpAlign(9,1)
+        
+        WColor=vec(TextEntry["Text",string]:explode(","):string(1):toNumber(),TextEntry["Text",string]:explode(","):string(2):toNumber(),TextEntry["Text",string]:explode(","):string(3):toNumber())
+    }
+    
+    if (Step3)
+    {
+        if (changed(Step3)&Step3)
+        {
+            EGP:egpClear()
+        
+            EGP:egpBox(1,ScreenCenter,ScreenRes)
+            EGP:egpColor(1,vec(0,150,255))
+            EGP:egpAlpha(1,100)
+        
+            EGP:egpBoxOutline(2,ScreenCenter,ScreenRes)
+            EGP:egpColor(2,vec(0,150,255))
+            EGP:egpSize(2,2)
+    
+            EGP:egpText(3,"What is your name",ScreenCenter+vec2(0,-25))
+            EGP:egpAlign(3,1)
+    
+            EGP:egpBox(5,SCenter+vec2(0,100),vec2(100,30))
+            EGP:egpText(6,"Next",SCenter+vec2(0,85))
+            EGP:egpColor(6,vec(20))
+            EGP:egpSize(6,30)
+            EGP:egpAlign(6,1)
+            
+            EGP:egpBox(7,SCenter+vec2(0,35),vec2(200,30))
+        } 
+    
+        EGP:egpText(8,TextEntry["Text",string],SCenter+vec2(-90,25))
+        EGP:egpColor(8,vec(0))
+    }
+}
+if (last()&Dtop)
+{
+    fileWrite("eiicfg.txt",jsonEncode(Ram))
+}
